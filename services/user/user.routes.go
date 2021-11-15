@@ -2,7 +2,7 @@ package user
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"portfoyum/utils/middleware"
+	"portfoyum-api/utils/middleware"
 )
 
 // UserRoutes contains all routes relative to /user

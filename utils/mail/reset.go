@@ -2,9 +2,9 @@ package mail
 
 import (
 	"github.com/matcornic/hermes/v2"
-	"portfoyum/config"
-	"portfoyum/services/user"
-	"portfoyum/utils/jwt"
+	"portfoyum-api/config"
+	"portfoyum-api/services/user"
+	"portfoyum-api/utils/jwt"
 )
 
 type Reset struct {}

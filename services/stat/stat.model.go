@@ -1,6 +1,6 @@
 package stat
 
-import "portfoyum/utils/database"
+import "portfoyum-api/utils/database"
 
 type Stats struct {
 	TotalQty      int   	`json:"totalQty"`

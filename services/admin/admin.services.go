@@ -5,11 +5,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gookit/color"
 	"gorm.io/gorm"
-	"portfoyum/types"
-	"portfoyum/utils"
-	"portfoyum/utils/database"
-	"portfoyum/utils/jwt"
-	"portfoyum/utils/password"
+	"portfoyum-api/types"
+	"portfoyum-api/utils"
+	"portfoyum-api/utils/database"
+	"portfoyum-api/utils/jwt"
+	"portfoyum-api/utils/password"
 )
 
 func InitAdmin() {

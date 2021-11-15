@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"portfoyum/utils/jwt"
+	"portfoyum-api/utils/jwt"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"

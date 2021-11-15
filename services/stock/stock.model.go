@@ -2,7 +2,7 @@ package stock
 
 import (
 	"github.com/piquette/finance-go"
-	"portfoyum/types"
+	"portfoyum-api/types"
 	"time"
 )
 
@@ -10,6 +10,7 @@ type Symbol struct {
 	types.TBaseModel `json:"-"`
 	Code             string `gorm:"primaryKey;size:20" json:"kod"`
 	Name             string `gorm:"not null;size:250" json:"ad"`
+	Slug             string `gorm:"size:250" json:"-"`
 }
 
 type Equity struct {

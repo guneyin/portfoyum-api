@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
-	"portfoyum/utils"
+	"portfoyum-api/utils"
 )
 
 func getAuthorisedUser(c *fiber.Ctx) (*User, *fiber.Error) {

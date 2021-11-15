@@ -5,9 +5,9 @@ import (
 	"github.com/go-gomail/gomail"
 	"github.com/gofiber/fiber/v2"
 	"github.com/matcornic/hermes/v2"
-	"portfoyum/config"
-	"portfoyum/services/user"
 	"net/mail"
+	"portfoyum-api/config"
+	"portfoyum-api/services/user"
 )
 
 type IMail interface {

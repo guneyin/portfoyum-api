@@ -1,7 +1,7 @@
 package admin
 
 import (
-	"portfoyum/types"
+	"portfoyum-api/types"
 )
 
 type AdminRequestDTO struct {

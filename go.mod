@@ -1,4 +1,4 @@
-module portfoyum
+module portfoyum-api
 
 go 1.17
 

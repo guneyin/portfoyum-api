@@ -2,13 +2,13 @@ package auth
 
 import (
 	"errors"
-	"portfoyum/services/user"
-	"portfoyum/types"
-	"portfoyum/utils"
-	"portfoyum/utils/jwt"
-	"portfoyum/utils/mail"
-	_ "portfoyum/utils/mail"
-	"portfoyum/utils/password"
+	"portfoyum-api/services/user"
+	"portfoyum-api/types"
+	"portfoyum-api/utils"
+	"portfoyum-api/utils/jwt"
+	"portfoyum-api/utils/mail"
+	_ "portfoyum-api/utils/mail"
+	"portfoyum-api/utils/password"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"

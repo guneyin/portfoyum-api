@@ -1,6 +1,6 @@
 package user
 
-import "portfoyum/types"
+import "portfoyum-api/types"
 
 type UserRequestDTO struct {
 	types.TEmail

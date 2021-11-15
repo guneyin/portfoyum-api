@@ -5,9 +5,9 @@ import (
 	"github.com/imdario/mergo"
 	"gorm.io/gorm"
 	"log"
-	"portfoyum/types"
-	"portfoyum/utils"
-	"portfoyum/utils/database"
+	"portfoyum-api/types"
+	"portfoyum-api/utils"
+	"portfoyum-api/utils/database"
 )
 
 type Admin struct {

@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"portfoyum/config"
+	"portfoyum-api/config"
 	"time"
 
 	"gorm.io/driver/postgres"

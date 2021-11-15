@@ -7,9 +7,9 @@ import (
 	"github.com/piquette/finance-go/equity"
 	"io/ioutil"
 	"net/http"
-	"portfoyum/config"
-	"portfoyum/utils"
-	"portfoyum/utils/database"
+	"portfoyum-api/config"
+	"portfoyum-api/utils"
+	"portfoyum-api/utils/database"
 	"strings"
 )
 

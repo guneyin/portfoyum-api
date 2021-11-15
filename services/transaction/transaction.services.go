@@ -5,7 +5,8 @@ import (
 	"encoding/csv"
 	"github.com/gofiber/fiber/v2"
 	"os"
-	"portfoyum/utils/database"
+	"portfoyum-api/services/stock"
+	"portfoyum-api/utils/database"
 	"strconv"
 	"strings"
 	"time"
@@ -82,6 +83,8 @@ func readTransactions(filename string) ([]Transaction, error) {
 		panic(err)
 	}
 
+	//symbol := new(stock.Symbol)
+
 	for i, line := range lines {
 		if (i == 0) || (i > len(lines)-3) {
 			continue
@@ -96,6 +99,11 @@ func readTransactions(filename string) ([]Transaction, error) {
 		t.Type = line[6]
 		t.Duplicated = isDuplicated(&t)
 		t.Import = !t.Duplicated
+
+		symbol := stock.Symbol{}
+		database.DB.Where("code = ?", t.Stock).First(&symbol)
+
+		t.Slug = symbol.Slug
 
 		result = append(result, t)
 	}

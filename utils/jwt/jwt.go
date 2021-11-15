@@ -3,8 +3,8 @@ package jwt
 import (
 	"errors"
 	"fmt"
-	"portfoyum/config"
-	"portfoyum/types"
+	"portfoyum-api/config"
+	"portfoyum-api/types"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"

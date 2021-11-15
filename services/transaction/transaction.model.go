@@ -2,7 +2,7 @@ package transaction
 
 import (
 	"gorm.io/gorm"
-	"portfoyum/utils/database"
+	"portfoyum-api/utils/database"
 	"time"
 )
 
@@ -17,6 +17,7 @@ type Transaction struct {
 	Type       string    `json:"type"`
 	Duplicated bool      `json:"duplicated" gorm:"-"`
 	Import     bool      `json:"import" gorm:"-"`
+	Slug	   string	 `json:"slug" gorm:"-"`
 }
 
 func CreateTransaction(t *Transaction) *gorm.DB {

@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"portfoyum/services/user"
-	"portfoyum/types"
+	"portfoyum-api/services/user"
+	"portfoyum-api/types"
 )
 
 type SignupRequestDTO struct {
