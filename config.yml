@@ -2,7 +2,7 @@ server:
   port: 3001
 
 database:
-  connectionUri: host=localhost user=postgres password=masterkey dbname=portfoyum port=5432 sslmode=disable
+  connectionUri: host=ec2-54-220-243-77.eu-west-1.compute.amazonaws.com user=mlotweuobefoci password=f1ed194bbf58351c812961c28cfaa8007e4941d2c556868920ca8a0c4a60cd80 dbname=d2skh429dtkob2 port=5432
 
 jwt:
   tokenKey: laksdjflkasjfwj92jfslj2qu0-9apsoifjk
