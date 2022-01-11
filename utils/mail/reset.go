@@ -7,7 +7,7 @@ import (
 	"portfoyum-api/utils/jwt"
 )
 
-type Reset struct {}
+type Reset struct{}
 
 func (r *Reset) Options() SendOptions {
 	return SendOptions{
@@ -17,9 +17,9 @@ func (r *Reset) Options() SendOptions {
 
 func (r *Reset) Email(user *user.User) hermes.Email {
 	t := new(jwt.TokenPayload)
-	t.ID = user.ID
+	t.UID = user.UID
 	t.Email = user.Email
-	t.Active = user.Active
+	//t.Active = user.Active
 
 	token := jwt.Generate(t, "30m")
 

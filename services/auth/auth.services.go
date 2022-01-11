@@ -38,15 +38,15 @@ func AuthSignup(c *fiber.Ctx) error {
 	}
 
 	t := new(jwt.TokenPayload)
-	t.ID = u.ID
+	t.UID = u.UID
 	t.Email = u.Email
-	t.Active = u.Active
+	//t.Active = u.Active
 
 	a := new(types.TToken)
 	a.Token = jwt.Generate(t)
 
 	data := &SignupResponseDTO{
-		User: u.HttpFriendlyResponse(),
+		User:  u.HttpFriendlyResponse(),
 		Token: a,
 	}
 
@@ -75,9 +75,9 @@ func AuthLogin(c *fiber.Ctx) error {
 	_ = utils.Copy(u, b)
 
 	t := new(jwt.TokenPayload)
-	t.ID = u.ID
+	t.UID = u.UID
 	t.Email = u.Email
-	t.Active = u.Active
+	//t.Active = u.Active
 
 	jwt := jwt.Generate(t)
 
@@ -85,7 +85,7 @@ func AuthLogin(c *fiber.Ctx) error {
 	token.Token = jwt
 
 	data := &SignupResponseDTO{
-		User: u.HttpFriendlyResponse(),
+		User:  u.HttpFriendlyResponse(),
 		Token: token,
 	}
 
@@ -123,7 +123,7 @@ func verifyToken(token string) (*user.User, error) {
 
 	u := &user.User{}
 
-	err = u.FindById(payload.ID).Error
+	err = u.FindById(payload.UID).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, errors.New("User not found")

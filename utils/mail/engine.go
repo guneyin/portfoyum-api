@@ -30,7 +30,7 @@ type smtpAuthentication struct {
 	SMTPPassword   string
 }
 
-func SendMail(e IMail, u *user.User)  *fiber.Error {
+func SendMail(e IMail, u *user.User) *fiber.Error {
 	if config.Settings.Application.SendMails == false {
 		return fiber.NewError(fiber.StatusInternalServerError, "Mail sender disabled by default")
 	}
@@ -55,7 +55,7 @@ func SendMail(e IMail, u *user.User)  *fiber.Error {
 	o := e.Options()
 	o.To = u.Email
 
-	u.Active = false
+	//u.Active = false
 
 	htmlBytes, err := h.GenerateHTML(m)
 	txtBytes, err := h.GeneratePlainText(m)

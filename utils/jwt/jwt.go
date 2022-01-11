@@ -12,7 +12,7 @@ import (
 )
 
 type TokenPayload struct {
-	types.TID
+	types.TUID
 	types.TEmail
 	types.TActive
 }
@@ -32,9 +32,9 @@ func Generate(payload *TokenPayload, duration ...string) string {
 	}
 
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"exp": time.Now().Add(v).Unix(),
-		"ID":  payload.ID,
-		"email": payload.Email,
+		"exp":    time.Now().Add(v).Unix(),
+		"ID":     payload.UID,
+		"email":  payload.Email,
 		"active": payload.Active,
 	})
 
@@ -86,7 +86,7 @@ func Verify(token string) (*TokenPayload, error) {
 	}
 
 	t := new(TokenPayload)
-	t.ID = uid
+	t.UID = uid
 
 	return t, nil
 }

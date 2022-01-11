@@ -53,7 +53,7 @@ func UserUpdate(c *fiber.Ctx) error {
 	}
 
 	if err := utils.Validate(u); err != nil {
-		return  err
+		return err
 	}
 
 	if err := u.Update(); err.Error != nil {
@@ -71,7 +71,7 @@ func UserDelete(c *fiber.Ctx) error {
 		return err
 	}
 
-	u.Active = false
+	//u.Active = false
 
 	if err := u.Delete(); err.Error != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error.Error())

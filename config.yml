@@ -2,8 +2,8 @@ server:
   port: 3001
 
 database:
-  connectionUri: host=ec2-54-220-243-77.eu-west-1.compute.amazonaws.com user=mlotweuobefoci password=f1ed194bbf58351c812961c28cfaa8007e4941d2c556868920ca8a0c4a60cd80 dbname=d2skh429dtkob2 port=5432
-
+  #connectionUri: host=ec2-54-220-243-77.eu-west-1.compute.amazonaws.com user=mlotweuobefoci password=f1ed194bbf58351c812961c28cfaa8007e4941d2c556868920ca8a0c4a60cd80 dbname=d2skh429dtkob2 port=5432
+  connectionUri: host=localhost user=postgres password=masterkey dbname=portfoyum port=5432 sslmode=disable
 jwt:
   tokenKey: laksdjflkasjfwj92jfslj2qu0-9apsoifjk
   tokenExp: 720h
@@ -22,7 +22,8 @@ mail:
   senderIdentity: Portföyüm
 
 externalUrl:
-  stockSymbols: https://bigpara.hurriyet.com.tr/api/v1/hisse/list
+  #stockSymbols: https://bigpara.hurriyet.com.tr/api/v1/hisse/list
   #stockSymbols: https://mocki.io/v1/25ae55bc-280c-43c7-948d-6db6ec3d111f
   #stockSymbolDetail: https://mocki.io/v1/1fca8d0d-506c-4113-b334-a3405aa09e93
-  stockSymbolDetail: https://bigpara.hurriyet.com.tr/api/v1/borsa/hisseyuzeysel/
+  #stockSymbolDetail: https://bigpara.hurriyet.com.tr/api/v1/borsa/hisseyuzeysel/
+  exchangeRates: https://api.exchangerate.host/%s?base=%s&symbols=TRY

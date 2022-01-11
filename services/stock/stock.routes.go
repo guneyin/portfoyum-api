@@ -7,8 +7,10 @@ import (
 func StockRoutes(app fiber.Router) {
 	r := app.Group("/stock")
 
+	r.Get("/equities/sync", SyncEquities)
+	r.Get("/equities/get", GetEquities)
+	r.Get("/equities/get/:code?", GetEquity)
 	r.Get("/symbols/sync", SyncSymbols)
-	r.Get("/symbols/get/:code?", GetSymbols)
-	r.Get("/symbols/detail/sync", SyncSymbolsDetail)
-	r.Get("/symbols/getList", GetSymbolList)
+
+	r.Get("exchange/get", GetExchangeRates)
 }

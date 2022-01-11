@@ -7,4 +7,5 @@ func TransactionRoutes(app fiber.Router) {
 
 	r.Post("/import", ImportTransactions)
 	r.Post("/save", SaveTransactions)
+	r.Get("/list/:compare?/*", ListTransactions)
 }

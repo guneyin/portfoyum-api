@@ -21,7 +21,6 @@ func InitAdmin() {
 	if count == 0 {
 		pass := "Portfoyum++2021!"
 
-		admin.Active = true
 		admin.Email = "admin@portfoyum.com"
 		admin.Password = password.Generate(pass)
 		admin.Name = "portfoyum"
@@ -57,9 +56,9 @@ func AdminLogin(c *fiber.Ctx) error {
 	_ = utils.Copy(u, b)
 
 	t := new(jwt.TokenPayload)
-	t.ID = u.ID
+	t.UID = u.UID
 	t.Email = u.Email
-	t.Active = u.Active
+	//t.Active = u.Active
 
 	jwt := jwt.Generate(t)
 

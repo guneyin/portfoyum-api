@@ -11,8 +11,9 @@ import (
 )
 
 type User struct {
-	types.TBaseModel `json:"-"`
-	types.TEmail     `gorm:"primaryKey"`
+	gorm.Model `json:"-"`
+	types.TUID
+	types.TEmail `gorm:"primaryKey"`
 	types.TPassword
 	types.TName
 	types.TSurname
@@ -49,7 +50,7 @@ func (u *User) Update() *gorm.DB {
 	d := database.DB.Updates(u)
 
 	if d.Error == nil {
-		u.FindById(u.ID)
+		u.FindById(u.UID)
 	}
 
 	return d

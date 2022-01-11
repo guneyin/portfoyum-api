@@ -42,6 +42,17 @@ func SaveTransactions(c *fiber.Ctx) error {
 	return c.SendStatus(200)
 }
 
+func ListTransactions(c *fiber.Ctx) error {
+	val := c.Params("*1")
+
+	return c.JSON(val)
+	//var transactions []Transaction
+
+	//database.DB.Preload("Symbol").Find(&transactions) //Model(&transactions).Association("Symbol").Find(&symbol)
+
+	//return c.JSON(transactions)
+}
+
 func readFromFile(filename string) ([][]string, error) {
 	f, err := os.Open(filename)
 
@@ -71,7 +82,7 @@ func isDuplicated(t *Transaction) bool {
 	transaction := Transaction{}
 	database.DB.Where(t).First(&transaction)
 
-	return transaction.Stock != ""
+	return transaction.SymbolCode != ""
 }
 
 func readTransactions(filename string) ([]Transaction, error) {
@@ -83,14 +94,12 @@ func readTransactions(filename string) ([]Transaction, error) {
 		panic(err)
 	}
 
-	//symbol := new(stock.Symbol)
-
 	for i, line := range lines {
 		if (i == 0) || (i > len(lines)-3) {
 			continue
 		}
 
-		t.Stock = line[0]
+		t.SymbolCode = line[0]
 		t.Date, _ = time.Parse("02.01.2006", line[1])
 		t.Quantity, _ = strconv.Atoi(line[2])
 		t.Price, _ = strconv.ParseFloat(strings.ReplaceAll(line[3], ",", "."), 32)
@@ -99,11 +108,9 @@ func readTransactions(filename string) ([]Transaction, error) {
 		t.Type = line[6]
 		t.Duplicated = isDuplicated(&t)
 		t.Import = !t.Duplicated
+		t.Symbol = stock.Symbol{}
 
-		symbol := stock.Symbol{}
-		database.DB.Where("code = ?", t.Stock).First(&symbol)
-
-		t.Slug = symbol.Slug
+		database.DB.First(&t.Symbol, "code = ?", t.SymbolCode)
 
 		result = append(result, t)
 	}

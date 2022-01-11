@@ -11,7 +11,8 @@ import (
 )
 
 type Admin struct {
-	types.TBaseModel `json:"-"`
+	gorm.Model `json:"-"`
+	types.TUID
 	types.TEmail
 	types.TPassword
 	types.TName
@@ -46,7 +47,7 @@ func (a *Admin) Update() *gorm.DB {
 	d := database.DB.Updates(a)
 
 	if d.Error == nil {
-		a.FindById(a.ID)
+		a.FindById(a.UID)
 	}
 
 	return d
@@ -63,4 +64,3 @@ func (a *Admin) FindByEmail(email string) *gorm.DB {
 func (a *Admin) FindById(id uuid.UUID) *gorm.DB {
 	return find(a, "id = ?", id)
 }
-

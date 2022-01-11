@@ -5,7 +5,7 @@ import (
 	"portfoyum-api/config"
 	"portfoyum-api/services/admin"
 	"portfoyum-api/services/auth"
-	"portfoyum-api/services/stat"
+	"portfoyum-api/services/stats"
 	"portfoyum-api/services/stock"
 	"portfoyum-api/services/transaction"
 	"portfoyum-api/services/user"
@@ -21,10 +21,15 @@ func main() {
 	config.Init()
 
 	database.Connect()
-	err := database.Migrate(&admin.Admin{}, &user.User{}, &stock.Symbol{}, &stock.SymbolDetail{}, &stock.Equity{}, &transaction.Transaction{})
-	if err != nil {
-		return
-	}
+
+	database.DB.AutoMigrate(
+		&admin.Admin{},
+		&user.User{},
+		&stock.Symbol{},
+		&stock.Equity{},
+		&stock.ExchangeRate{},
+		&transaction.Transaction{},
+	)
 
 	admin.InitAdmin()
 
@@ -46,7 +51,7 @@ func main() {
 	user.UserRoutes(v1)
 	stock.StockRoutes(v1)
 	transaction.TransactionRoutes(v1)
-	stat.StatRoutes(v1)
+	stats.StatRoutes(v1)
 
 	app.Listen(fmt.Sprintf(":%v", config.Settings.Server.Port))
 }

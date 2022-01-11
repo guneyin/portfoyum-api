@@ -12,7 +12,7 @@ type AdminRequestDTO struct {
 }
 
 type AdminResponseDTO struct {
-	types.TID
+	types.TUID
 	AdminRequestDTO
 }
 
@@ -22,6 +22,6 @@ type LoginRequestDTO struct {
 }
 
 type LoginResponseDTO struct {
-	Admin *AdminResponseDTO`json:"user"`
+	Admin *AdminResponseDTO `json:"user"`
 	Token *types.TToken
 }

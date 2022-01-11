@@ -1,4 +1,4 @@
-package stat
+package stats
 
 import "github.com/gofiber/fiber/v2"
 

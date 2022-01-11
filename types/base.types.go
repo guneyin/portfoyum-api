@@ -2,20 +2,11 @@ package types
 
 import (
 	"github.com/gofrs/uuid"
-	"gorm.io/gorm"
 	"time"
 )
 
-type TBaseModel struct {
-	TID
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt
-	Active    bool
-}
-
-type TID struct {
-	ID uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();uniqueIndex;<-:false"`
+type TUID struct {
+	UID uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4()"`
 }
 
 type TActive struct {

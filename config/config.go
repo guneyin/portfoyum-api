@@ -10,7 +10,7 @@ var Settings *Configuration
 type Configuration struct {
 	Server      ServerConfiguration
 	Database    DatabaseConfiguration
-	Jwt			JwtConfiguration
+	Jwt         JwtConfiguration
 	Application ApplicationConfiguration
 	Mail        MailConfiguration
 	ExternalUrl ExternalUrlConfiguration
@@ -30,23 +30,24 @@ type JwtConfiguration struct {
 }
 
 type ApplicationConfiguration struct {
-	Name string
-	Link string
+	Name      string
+	Link      string
 	SendMails bool
 }
 
 type MailConfiguration struct {
-	SmtpPort int
-	SmtpPassword string
-	SmtpUserName string
-	SmtpServer string
-	SenderEmail string
+	SmtpPort       int
+	SmtpPassword   string
+	SmtpUserName   string
+	SmtpServer     string
+	SenderEmail    string
 	SenderIdentity string
 }
 
 type ExternalUrlConfiguration struct {
-	StockSymbols      string
-	StockSymbolDetail string
+	ExchangeRates string
+	//StockSymbols      string
+	//StockSymbolDetail string
 }
 
 func Init() {

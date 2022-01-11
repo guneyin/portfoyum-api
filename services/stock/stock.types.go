@@ -5,13 +5,6 @@ type SyncSymbolRequestDTO struct {
 	Data []Symbol
 }
 
-type SyncSymbolDetailRequestDTO struct {
-	Code string `json:"code"`
-	Data struct {
-		HisseYuzeysel SymbolDetail
-	}
-}
-
 type GetSymbolRequestDTO struct {
 	Code string `json:"code"`
 }

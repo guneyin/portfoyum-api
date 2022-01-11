@@ -13,6 +13,6 @@ type UserRequestDTO struct {
 }
 
 type UserResponseDTO struct {
-	types.TID
+	types.TUID
 	UserRequestDTO
 }
