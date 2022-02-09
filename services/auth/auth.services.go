@@ -2,19 +2,17 @@ package auth
 
 import (
 	"errors"
+	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 	"portfoyum-api/services/user"
-	"portfoyum-api/types"
 	"portfoyum-api/utils"
 	"portfoyum-api/utils/jwt"
 	"portfoyum-api/utils/mail"
 	_ "portfoyum-api/utils/mail"
 	"portfoyum-api/utils/password"
-
-	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
 )
 
-func AuthSignup(c *fiber.Ctx) error {
+func Signup(c *fiber.Ctx) error {
 	b := new(SignupRequestDTO)
 
 	if err := utils.ParseBodyAndValidate(c, b); err != nil {
@@ -38,22 +36,17 @@ func AuthSignup(c *fiber.Ctx) error {
 	}
 
 	t := new(jwt.TokenPayload)
-	t.UID = u.UID
+	t.ID = u.ID
 	t.Email = u.Email
-	//t.Active = u.Active
 
-	a := new(types.TToken)
-	a.Token = jwt.Generate(t)
+	data := new(TokenResponseDTO)
+	//data.User = u.HttpFriendlyResponse()
+	data.Token = jwt.Generate(t)
 
-	data := &SignupResponseDTO{
-		User:  u.HttpFriendlyResponse(),
-		Token: a,
-	}
-
-	return c.JSON(utils.Response("User created", data))
+	return utils.Response(c, "User created", data)
 }
 
-func AuthLogin(c *fiber.Ctx) error {
+func Login(c *fiber.Ctx) error {
 	b := new(LoginRequestDTO)
 
 	if err := utils.ParseBodyAndValidate(c, b); err != nil {
@@ -75,24 +68,30 @@ func AuthLogin(c *fiber.Ctx) error {
 	_ = utils.Copy(u, b)
 
 	t := new(jwt.TokenPayload)
-	t.UID = u.UID
+	t.ID = u.ID
 	t.Email = u.Email
-	//t.Active = u.Active
 
-	jwt := jwt.Generate(t)
+	data := new(TokenResponseDTO)
 
-	token := new(types.TToken)
-	token.Token = jwt
+	//data.User = u.HttpFriendlyResponse()
+	//token := jwt.Generate(t)
+	data.Token = jwt.Generate(t)
 
-	data := &SignupResponseDTO{
-		User:  u.HttpFriendlyResponse(),
-		Token: token,
-	}
+	//cookie := new(fiber.Cookie)
+	//cookie.Name = "token"
+	//cookie.Value = token
+	//cookie.HTTPOnly = true
+	//cookie.SameSite = "None"
+	//cookie.Secure = false
+	//cookie.Path = "/"
+	//cookie.Expires = time.Now().AddDate(0, 1, 0)
+	//
+	//c.Cookie(cookie)
 
-	return c.JSON(utils.Response("Login successful", data))
+	return utils.Response(c, "Login successful", data)
 }
 
-func AuthForgotPassword(c *fiber.Ctx) error {
+func ForgotPassword(c *fiber.Ctx) error {
 	b := new(PasswordForgotRequestDTO)
 
 	if err := utils.ParseBodyAndValidate(c, b); err != nil {
@@ -111,38 +110,38 @@ func AuthForgotPassword(c *fiber.Ctx) error {
 		return err
 	}
 
-	return c.JSON(utils.Response("Recovery email sent"))
+	return utils.Response(c, "Recovery email sent")
 }
 
 func verifyToken(token string) (*user.User, error) {
 	payload, err := jwt.Verify(token)
 
 	if err != nil {
-		return nil, errors.New("Token is not valid")
+		return nil, errors.New("token is not valid")
 	}
 
 	u := &user.User{}
 
-	err = u.FindById(payload.UID).Error
+	err = u.FindById(payload.ID).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, errors.New("User not found")
+		return nil, errors.New("user not found")
 	}
 
 	return u, nil
 }
 
-func AuthVerifyToken(c *fiber.Ctx) error {
+func VerifyToken(c *fiber.Ctx) error {
 	token := c.Params("token")
 
 	if _, err := verifyToken(token); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(utils.Response("Token is valid"))
+	return utils.Response(c, "Token is valid")
 }
 
-func AuthChangePassword(c *fiber.Ctx) error {
+func ChangePassword(c *fiber.Ctx) error {
 	b := new(PasswordChangeRequestDTO)
 
 	if err := utils.ParseBodyAndValidate(c, b); err != nil {
@@ -165,5 +164,5 @@ func AuthChangePassword(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error.Error())
 	}
 
-	return c.JSON(utils.Response("Password changed"))
+	return utils.Response(c, "Password changed")
 }

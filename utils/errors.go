@@ -15,8 +15,8 @@ func ErrorHandler(c *fiber.Ctx, err error) error {
 	}
 
 	return c.Status(code).JSON(&ResponseHTTP{
-		Success: code == fiber.StatusOK,
+		//Success: code == fiber.StatusOK,
 		Message: err.Error(),
-		Data: nil,
+		Data:    nil,
 	})
 }

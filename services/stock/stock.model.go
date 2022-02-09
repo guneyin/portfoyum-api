@@ -44,7 +44,7 @@ func (er *ExchangeRate) Get(symbol string, date time.Time) float64 {
 		if p > 0 {
 			er.Rate = p
 
-			database.DB.Debug().Save(&er)
+			database.DB.Save(&er)
 		}
 	}
 

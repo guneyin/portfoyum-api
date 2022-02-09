@@ -2,13 +2,11 @@ package utils
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofrs/uuid"
 )
 
 type ResponseHTTP struct {
-	Success bool        `json:"success"`
-	Data    interface{} `json:"data,omitempty"`
 	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
 
 func ParseBody(ctx *fiber.Ctx, body interface{}) *fiber.Error {
@@ -27,20 +25,24 @@ func ParseBodyAndValidate(ctx *fiber.Ctx, body interface{}) *fiber.Error {
 	return Validate(body)
 }
 
-func GetUserId(c *fiber.Ctx) *uuid.UUID {
-	id, _ := c.Locals("USER").(uuid.UUID)
+func GetUserId(c *fiber.Ctx) *uint {
+	id, _ := c.Locals("USER").(uint)
 
 	return &id
 }
 
-func Response(message string, data ...interface{}) *ResponseHTTP {
-	//if data == nil {
-	//	data = make([]interface{}, 0)
-	//}
+//func Response(message string, data ...interface{}) *ResponseHTTP {
+//	return &ResponseHTTP{
+//		Message: message,
+//		Data:    data[0],
+//	}
+//}
 
-	return &ResponseHTTP{
-		Success: true,
+func Response(c *fiber.Ctx, message string, data ...interface{}) error {
+	content := &ResponseHTTP{
 		Message: message,
-		Data: data,
+		Data:    data[0],
 	}
+
+	return c.JSON(content)
 }

@@ -6,13 +6,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"os"
 	"portfoyum-api/services/stock"
+	"portfoyum-api/utils"
 	"portfoyum-api/utils/database"
 	"strconv"
 	"strings"
 	"time"
 )
 
-func ImportTransactions(c *fiber.Ctx) error {
+func UploadTransactions(c *fiber.Ctx) error {
 	file, err := c.FormFile("dataFile")
 	if err != nil {
 		return err
@@ -34,7 +35,9 @@ func SaveTransactions(c *fiber.Ctx) error {
 		return err
 	}
 
-	err := saveTransactions(*t)
+	uid := utils.GetUserId(c)
+
+	err := saveTransactions(*t, *uid)
 	if err != nil {
 		return err
 	}
@@ -42,15 +45,18 @@ func SaveTransactions(c *fiber.Ctx) error {
 	return c.SendStatus(200)
 }
 
-func ListTransactions(c *fiber.Ctx) error {
-	val := c.Params("*1")
+func GetTransactions(c *fiber.Ctx) error {
+	symbol := c.Params("symbol")
 
-	return c.JSON(val)
-	//var transactions []Transaction
+	var transactions []Transaction
 
-	//database.DB.Preload("Symbol").Find(&transactions) //Model(&transactions).Association("Symbol").Find(&symbol)
+	if symbol == "" {
+		database.DB.Preload("Symbol").Find(&transactions)
+	} else {
+		database.DB.Preload("Symbol").Where("symbol_code = ?", symbol).Find(&transactions)
+	}
 
-	//return c.JSON(transactions)
+	return c.JSON(transactions)
 }
 
 func readFromFile(filename string) ([][]string, error) {
@@ -118,9 +124,10 @@ func readTransactions(filename string) ([]Transaction, error) {
 	return result, nil
 }
 
-func saveTransactions(d []Transaction) error {
+func saveTransactions(d []Transaction, uid uint) error {
 	for _, t := range d {
 		if t.Import == true {
+			t.UserID = uid
 			err := CreateTransaction(&t)
 			if err.Error != nil {
 				return err.Error

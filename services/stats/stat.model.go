@@ -1,9 +1,12 @@
 package stats
 
-import "portfoyum-api/utils/database"
+import (
+	"portfoyum-api/utils/database"
+)
 
 type Stats struct {
 	TotalQty      int     `json:"totalQty"`
+	TotalSymbol   int     `json:"totalSymbol"`
 	TotalBuy      float64 `json:"totalBuy"`
 	TotalPrice    float64 `json:"totalPrice"`
 	GainByPrice   float64 `json:"gainByPrice"`
@@ -14,6 +17,9 @@ func (s *Stats) Init() {
 	row := database.DB.Table("transactions").Where("type = ?", "Hisse Alış").Select("sum(quantity)").Row()
 	row.Scan(&s.TotalQty)
 
+	row = database.DB.Table("transactions").Where("type = ?", "Hisse Alış").Select("count(distinct symbol_code)").Row()
+	row.Scan(&s.TotalSymbol)
+
 	row = database.DB.Table("transactions").Where("type = ?", "Hisse Alış").Select("sum(price)").Row()
 	row.Scan(&s.TotalBuy)
 
@@ -21,5 +27,11 @@ func (s *Stats) Init() {
 	row.Scan(&s.TotalPrice)
 
 	s.GainByPrice = s.TotalPrice - s.TotalBuy
-	s.GainByPercent = s.GainByPrice / s.TotalBuy
+
+	if s.GainByPrice > 0 {
+		s.GainByPercent = (s.GainByPrice / s.TotalBuy) * 100
+	} else {
+		s.GainByPercent = 0
+	}
+
 }

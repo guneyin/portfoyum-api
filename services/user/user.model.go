@@ -1,7 +1,6 @@
 package user
 
 import (
-	"github.com/gofrs/uuid"
 	"github.com/imdario/mergo"
 	"gorm.io/gorm"
 	"log"
@@ -11,9 +10,8 @@ import (
 )
 
 type User struct {
-	gorm.Model `json:"-"`
-	types.TUID
-	types.TEmail `gorm:"primaryKey"`
+	gorm.Model   `json:"-"`
+	types.TEmail `gorm:"uniqueIndex"`
 	types.TPassword
 	types.TName
 	types.TSurname
@@ -50,7 +48,7 @@ func (u *User) Update() *gorm.DB {
 	d := database.DB.Updates(u)
 
 	if d.Error == nil {
-		u.FindById(u.UID)
+		u.FindById(u.ID)
 	}
 
 	return d
@@ -64,6 +62,6 @@ func (u *User) FindByEmail(email string) *gorm.DB {
 	return find(u, "email = ?", email)
 }
 
-func (u *User) FindById(id uuid.UUID) *gorm.DB {
+func (u *User) FindById(id uint) *gorm.DB {
 	return find(u, "id = ?", id)
 }

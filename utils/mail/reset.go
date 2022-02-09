@@ -17,7 +17,7 @@ func (r *Reset) Options() SendOptions {
 
 func (r *Reset) Email(user *user.User) hermes.Email {
 	t := new(jwt.TokenPayload)
-	t.UID = user.UID
+	t.ID = user.ID
 	t.Email = user.Email
 	//t.Active = user.Active
 

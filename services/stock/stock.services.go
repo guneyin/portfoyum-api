@@ -18,7 +18,7 @@ func GetExchangeRates(c *fiber.Ctx) error {
 
 	er.Get("USD", time.Now().AddDate(0, 0, -1))
 
-	return c.JSON(utils.Response(fmt.Sprintf("Exchange rates fetched"), er))
+	return utils.Response(c, "Exchange rates fetched", er)
 }
 
 func SyncEquities(c *fiber.Ctx) error {
@@ -40,7 +40,7 @@ func SyncEquities(c *fiber.Ctx) error {
 		panic(iter.Err())
 	}
 
-	return c.JSON(utils.Response(fmt.Sprintf("%v symbols fetched", len(symbols)), nil))
+	return utils.Response(c, fmt.Sprintf("%v symbols fetched", len(symbols)))
 }
 
 func GetEquities(c *fiber.Ctx) error {
@@ -48,7 +48,7 @@ func GetEquities(c *fiber.Ctx) error {
 
 	database.DB.Find(&e)
 
-	return c.JSON(utils.Response(fmt.Sprintf("%v equity fetched", len(e)), e))
+	return utils.Response(c, fmt.Sprintf("%v equity fetched", len(e)), e)
 }
 
 func GetEquity(c *fiber.Ctx) error {
@@ -58,7 +58,7 @@ func GetEquity(c *fiber.Ctx) error {
 
 	database.DB.Where("symbol = ?", symbol).First(&e)
 
-	return c.JSON(utils.Response(fmt.Sprintf("%v equity fetched", symbol), e))
+	return utils.Response(c, fmt.Sprintf("%v equity fetched", symbol), e)
 }
 
 //func getSymbolList() []string {
@@ -117,5 +117,5 @@ func SyncSymbols(c *fiber.Ctx) error {
 		database.DB.Save(&s)
 	}
 
-	return c.JSON(utils.Response(fmt.Sprintf("%d symbols fetched", len(symbolList.Data)), nil))
+	return utils.Response(c, fmt.Sprintf("%d symbols fetched", len(symbolList.Data)))
 }

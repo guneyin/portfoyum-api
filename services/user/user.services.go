@@ -33,7 +33,7 @@ func UserMe(c *fiber.Ctx) error {
 
 	data := u.HttpFriendlyResponse()
 
-	return c.JSON(utils.Response("Authorized user fetched", data))
+	return utils.Response(c, "Authorized user fetched", data)
 }
 
 func UserUpdate(c *fiber.Ctx) error {
@@ -62,7 +62,7 @@ func UserUpdate(c *fiber.Ctx) error {
 
 	data := u.HttpFriendlyResponse()
 
-	return c.JSON(utils.Response("User successfully updated", data))
+	return utils.Response(c, "User successfully updated", data)
 }
 
 func UserDelete(c *fiber.Ctx) error {
@@ -77,5 +77,5 @@ func UserDelete(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error.Error())
 	}
 
-	return c.JSON(utils.Response("User successfully deleted"))
+	return utils.Response(c, "User successfully deleted")
 }

@@ -8,9 +8,9 @@ import (
 func AuthRoutes(app fiber.Router) {
 	r := app.Group("/auth")
 
-	r.Post("/signup", AuthSignup)
-	r.Post("/login", AuthLogin)
-	r.Post("/password/forgot", AuthForgotPassword)
-	r.Get("/password/verify/:token", AuthVerifyToken)
-	r.Post("/password/change", AuthChangePassword)
+	r.Post("/signup", Signup)
+	r.Post("/login", Login)
+	r.Post("/password/forgot", ForgotPassword)
+	r.Get("/verify/:token", VerifyToken)
+	r.Post("/password/change", ChangePassword)
 }

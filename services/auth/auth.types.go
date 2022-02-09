@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"portfoyum-api/services/user"
 	"portfoyum-api/types"
 )
 
@@ -12,9 +11,9 @@ type SignupRequestDTO struct {
 	types.TSurname
 }
 
-type SignupResponseDTO struct {
-	User *user.UserResponseDTO`json:"user"`
-	Token *types.TToken
+type TokenResponseDTO struct {
+	//User *user.UserResponseDTO `json:"user"`
+	types.TToken
 }
 
 type LoginRequestDTO struct {

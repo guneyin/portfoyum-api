@@ -8,13 +8,16 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gofrs/uuid"
 )
 
 type TokenPayload struct {
-	types.TUID
+	ID uint `json:"id"`
 	types.TEmail
-	types.TActive
+}
+
+type Claim struct {
+	TokenPayload
+	jwt.StandardClaims
 }
 
 func Generate(payload *TokenPayload, duration ...string) string {
@@ -25,18 +28,32 @@ func Generate(payload *TokenPayload, duration ...string) string {
 	} else {
 		d = config.Settings.Jwt.TokenExp
 	}
+
 	v, err := time.ParseDuration(d)
 
 	if err != nil {
 		panic("Invalid time duration. Should be time.ParseDuration string")
 	}
 
-	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"exp":    time.Now().Add(v).Unix(),
-		"ID":     payload.UID,
-		"email":  payload.Email,
-		"active": payload.Active,
-	})
+	claim := &Claim{
+		TokenPayload: *payload,
+		StandardClaims: jwt.StandardClaims{
+			Audience:  "",
+			ExpiresAt: time.Now().Add(v).Unix(),
+			Id:        string(payload.ID),
+			IssuedAt:  time.Now().Unix(),
+			Issuer:    payload.Email,
+			NotBefore: 0,
+			Subject:   "",
+		},
+	}
+
+	t := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
+
+	//t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	//	"exp":  time.Now().Add(v).Unix(),
+	//	"user": payload,
+	//})
 
 	token, err := t.SignedString([]byte(config.Settings.Jwt.TokenKey))
 
@@ -48,19 +65,23 @@ func Generate(payload *TokenPayload, duration ...string) string {
 }
 
 func parse(token string) (*jwt.Token, error) {
-	// Parse takes the token string and a function for looking up the key. The latter is especially
-	// useful if you use multiple keys for your application.  The standard is to use 'kid' in the
-	// head of the token to identify which key to use, but the parsed token (head and claims) is provided
-	// to the callback, providing flexibility.
-	return jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
-		// Don't forget to validate the alg is what you expect:
+	return jwt.ParseWithClaims(token, &Claim{}, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
 		}
 
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return []byte(config.Settings.Jwt.TokenKey), nil
 	})
+
+	//return jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+	//	// Don't forget to validate the alg is what you expect:
+	//	if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+	//		return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
+	//	}
+	//
+	//	// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
+	//	return []byte(config.Settings.Jwt.TokenKey), nil
+	//})
 }
 
 // Verify verifies the jwt token against the secret
@@ -71,22 +92,27 @@ func Verify(token string) (*TokenPayload, error) {
 		return nil, err
 	}
 
-	// Parsing token claims
-	claims, ok := parsed.Claims.(jwt.MapClaims)
+	//claims, ok := parsed.Claims.(jwt.MapClaims)
+	claims, ok := parsed.Claims.(*Claim)
+
 	if !ok {
 		return nil, err
 	}
 
 	// Getting ID, it's an interface{} so I need to cast it to uint
-	id, ok := claims["ID"].(string)
-	uid, err := uuid.FromString(id)
+	//id, ok := claims["id"].(float64)
+	//email, ok := claims["email"].(string)
+	//uid, err := strconv.ParseUint(id, 10, 32)
+	//uid, err := strconv.Atoi(id)
+	//uid, err := uuid.FromString(id)
 
-	if (!ok) && (err != nil) {
+	if !ok {
 		return nil, errors.New("something went wrong")
 	}
 
 	t := new(TokenPayload)
-	t.UID = uid
+	t.ID = claims.ID
+	t.Email = claims.Email
 
 	return t, nil
 }
