@@ -3,6 +3,7 @@ package auth
 import (
 	"errors"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofrs/uuid"
 	"gorm.io/gorm"
 	"portfoyum-api/services/user"
 	"portfoyum-api/utils"
@@ -10,6 +11,7 @@ import (
 	"portfoyum-api/utils/mail"
 	_ "portfoyum-api/utils/mail"
 	"portfoyum-api/utils/password"
+	"time"
 )
 
 func Signup(c *fiber.Ctx) error {
@@ -69,7 +71,10 @@ func Login(c *fiber.Ctx) error {
 
 	t := new(jwt.TokenPayload)
 	t.ID = u.ID
+
 	t.Email = u.Email
+
+	uid, _ := uuid.NewV4()
 
 	data := new(TokenResponseDTO)
 
@@ -77,16 +82,16 @@ func Login(c *fiber.Ctx) error {
 	//token := jwt.Generate(t)
 	data.Token = jwt.Generate(t)
 
-	//cookie := new(fiber.Cookie)
-	//cookie.Name = "token"
-	//cookie.Value = token
-	//cookie.HTTPOnly = true
-	//cookie.SameSite = "None"
-	//cookie.Secure = false
-	//cookie.Path = "/"
-	//cookie.Expires = time.Now().AddDate(0, 1, 0)
-	//
-	//c.Cookie(cookie)
+	cookie := new(fiber.Cookie)
+	cookie.Name = "session_id"
+	cookie.Value = uid.String()
+	cookie.HTTPOnly = false
+	cookie.SameSite = "None"
+	cookie.Secure = false
+	cookie.Path = "/"
+	cookie.Expires = time.Now().AddDate(0, 1, 0)
+
+	c.Cookie(cookie)
 
 	return utils.Response(c, "Login successful", data)
 }
