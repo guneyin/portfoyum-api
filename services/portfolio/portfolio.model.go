@@ -10,18 +10,20 @@ import (
 type Item struct {
 	SymbolCode string               `json:"symbol_code"`
 	Quantity   int                  `json:"quantity"`
-	Price      float64              `json:"price"`
+	TotalBuy   float64              `json:"price"`
 	Symbol     stock.Symbol         `json:"symbol"`
 	Compared   transaction.Compared `json:"compared"`
 }
 
 type Portfolio struct {
 	Items []struct {
-		SymbolCode string               `json:"symbol_code"`
-		Quantity   int                  `json:"quantity"`
-		Price      float64              `json:"price"`
-		Symbol     stock.Symbol         `json:"symbol"`
-		Compared   transaction.Compared `json:"compared"`
+		SymbolCode string       `json:"symbol_code"`
+		Price      float64      `json:"price"`
+		Quantity   int          `json:"quantity"`
+		TotalBuy   float64      `json:"total_buy"`
+		TotalPrice float64      `json:"total_price"`
+		Symbol     stock.Symbol `json:"symbol"`
+		//Compared   transaction.Compared `json:"compared"`
 	} `json:"items"`
 }
 
@@ -32,21 +34,25 @@ func (p *Portfolio) Init(Symbol string) {
 		symbolCondition = fmt.Sprintf("where s.symbol_code = '%s'", Symbol)
 	}
 
-	database.DB.Raw("select s.symbol_code, sum(s.quantity) quantity, sum(s.price) price " +
-		"from ( " +
-		"select symbol_code, " +
-		"case " +
-		"when type = 'Hisse Satış' then -1 * quantity " +
-		"else quantity " +
-		"end quantity, " +
-		"case " +
-		"when type = 'Hisse Satış' then -1 * price " +
-		"else price " +
-		"end price " +
-		"from transactions) as s " +
-		symbolCondition +
-		"group by s.symbol_code " +
-		"having sum(s.quantity) > 0 ").Scan(&p.Items)
+	database.DB.Raw(
+		"select t.*, t.price * t.quantity as total_price " +
+			"from  (" +
+			"select s.symbol_code, e.regular_market_price as price, sum(s.quantity) quantity, sum(s.price) total_buy " +
+			"from ( " +
+			"select symbol_code, " +
+			"case " +
+			"when type = 'Hisse Satış' then -1 * quantity " +
+			"else quantity " +
+			"end quantity, " +
+			"case " +
+			"when type = 'Hisse Satış' then -1 * price " +
+			"else price " +
+			"end price " +
+			"from transactions) as s " +
+			"inner join equities e on (e.code = s.symbol_code)" +
+			symbolCondition +
+			"group by s.symbol_code, e.regular_market_price " +
+			"having sum(s.quantity) > 0) as t ").Scan(&p.Items)
 
 	for i, item := range p.Items {
 		database.DB.First(&p.Items[i].Symbol, "code = ?", item.SymbolCode)
