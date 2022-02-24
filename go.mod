@@ -8,19 +8,17 @@ require (
 	github.com/go-playground/validator/v10 v10.5.0
 	github.com/gofiber/fiber/v2 v2.8.0
 	github.com/gofrs/uuid v4.0.0+incompatible
-	github.com/gookit/color v1.4.2
 	github.com/imdario/mergo v0.3.12
 	github.com/matcornic/hermes/v2 v2.1.0
 	github.com/piquette/finance-go v1.0.0
 	github.com/spf13/viper v1.7.1
 	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3
-	google.golang.org/genproto v0.0.0-20191108220845-16a3f7862a1a
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
-	gorm.io/datatypes v1.0.5
-	gorm.io/driver/postgres v1.2.3
-	gorm.io/gorm v1.22.4
+	gorm.io/gorm v1.23.1
 )
+
+require gorm.io/driver/postgres v1.3.1
 
 require (
 	github.com/Masterminds/semver v1.4.2 // indirect
@@ -32,8 +30,6 @@ require (
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
 	github.com/go-playground/locales v0.13.0 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
-	github.com/go-sql-driver/mysql v1.6.0 // indirect
-	github.com/golang/protobuf v1.3.2 // indirect
 	github.com/google/uuid v1.0.0 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
@@ -70,13 +66,9 @@ require (
 	github.com/valyala/tcplisten v0.0.0-20161114210144-ceec8f93295a // indirect
 	github.com/vanng822/css v0.0.0-20190504095207-a21e860bcd04 // indirect
 	github.com/vanng822/go-premailer v0.0.0-20191214114701-be27abe028fe // indirect
-	github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778 // indirect
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect
 	golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/ini.v1 v1.51.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
-	gorm.io/driver/mysql v1.2.2 // indirect
-	gorm.io/driver/sqlite v1.2.6 // indirect
-	gorm.io/driver/sqlserver v1.2.1 // indirect
 )

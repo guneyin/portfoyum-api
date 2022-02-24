@@ -16,6 +16,7 @@ var DB *gorm.DB
 // Connect initiate the database connection and migrate all the tables
 func Connect() {
 	db, err := gorm.Open(postgres.Open(config.Settings.Database.ConnectionUri), &gorm.Config{
+		//db, err := gorm.Open(sqlite.Open("data.db"), &gorm.Config{
 		NowFunc: func() time.Time { return time.Now().Local() },
 		Logger:  logger.Default.LogMode(logger.Info),
 	})

@@ -2,8 +2,10 @@ server:
   port: 3001
 
 database:
-  #connectionUri: host=ec2-54-220-243-77.eu-west-1.compute.amazonaws.com user=mlotweuobefoci password=f1ed194bbf58351c812961c28cfaa8007e4941d2c556868920ca8a0c4a60cd80 dbname=d2skh429dtkob2 port=5432
-  connectionUri: host=localhost user=postgres password=masterkey dbname=portfoyum port=5432 sslmode=disable
+  #connectionUri: host=ec2-52-51-155-48.eu-west-1.compute.amazonaws.com user=ngkiqjzertebhl password=60280cd864dc2679ba4bdb68ad74356e4323bdf8deb6516376b0dfee0d96c2aa dbname=d2m0pmql50fij4 port=5432
+  connectionUri: host=ec2-52-208-145-55.eu-west-1.compute.amazonaws.com user=syuzddgprzvlrk password=2d6cdde1b6184f780a267f1229e41c81e4a0f6fafddcd9c47aea0330f07e7131 dbname=d7kqk445q0qicg port=5432
+
+  #connectionUri: host=localhost user=postgres password=masterkey dbname=portfoyum port=5432 sslmode=disable
 jwt:
   tokenKey: laksdjflkasjfwj92jfslj2qu0-9apsoifjk
   tokenExp: 720h
